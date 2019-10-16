@@ -5382,5 +5382,9 @@
     "Private identifiers are only available when targeting ECMAScript 2015 and higher.": {
         "category": "Error",
         "code": 18028
+    },
+    "An optional chain cannot contain private identifiers.": {
+        "category": "Error",
+        "code": 18029
     }
 }

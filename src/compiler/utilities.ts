@@ -2957,10 +2957,11 @@ namespace ts {
         }
     }
 
-    export type PropertyNameLiteral = Identifier | StringLiteralLike | NumericLiteral;
+    export type PropertyNameLiteral = Identifier | PrivateIdentifier | StringLiteralLike | NumericLiteral;
     export function isPropertyNameLiteral(node: Node): node is PropertyNameLiteral {
         switch (node.kind) {
             case SyntaxKind.Identifier:
+            case SyntaxKind.PrivateIdentifier:
             case SyntaxKind.StringLiteral:
             case SyntaxKind.NoSubstitutionTemplateLiteral:
             case SyntaxKind.NumericLiteral:
@@ -2970,11 +2971,23 @@ namespace ts {
         }
     }
     export function getTextOfIdentifierOrLiteral(node: PropertyNameLiteral): string {
-        return node.kind === SyntaxKind.Identifier ? idText(node) : node.text;
+        switch (node.kind) {
+            case SyntaxKind.Identifier:
+            case SyntaxKind.PrivateIdentifier:
+                return idText(node);
+            default:
+                return node.text;
+        }
     }
 
     export function getEscapedTextOfIdentifierOrLiteral(node: PropertyNameLiteral): __String {
-        return node.kind === SyntaxKind.Identifier ? node.escapedText : escapeLeadingUnderscores(node.text);
+        switch(node.kind) {
+            case SyntaxKind.Identifier:
+            case SyntaxKind.PrivateIdentifier:
+                return node.escapedText;
+            default:
+                return escapeLeadingUnderscores(node.text);
+        }
     }
 
     export function getPropertyNameForUniqueESSymbol(symbol: Symbol): __String {
